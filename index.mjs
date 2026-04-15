@@ -11,6 +11,8 @@ import pg from "pg";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
+import initDB from "./modules/seat_booking/config/db.init.js";
+import initAuthDB from "./modules/auth/config/auth.db.init.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -83,4 +85,15 @@ app.put("/:id/:name", async (req, res) => {
   }
 });
 
+// create auth users table
+initAuthDB().catch((error) => {
+  console.error(error);
+});
+// create and populate seats table
+initDB().catch((error) => {
+  console.error(error);
+});
+
 app.listen(port, () => console.log("Server starting on port: " + port));
+
+export { pool };
